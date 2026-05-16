@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            border: none;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            color: #495057;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .content {
+            padding: 40px;
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .course-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: end;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .course-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .semester-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: end;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .semester-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #333;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+            padding: 8px 15px;
+            min-width: auto;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .btn-add {
+            background: #48bb78;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .btn-add:hover {
+            background: #38a169;
+        }
+
+        .result {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #555;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #c33;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #3c3;
+            display: none;
+        }
+
+        .success.show {
+            display: block;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1976d2;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .tab-button {
+                min-width: 120px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 CGPA Calculator</h1>
+            <p>Calculate Your GPA, CGPA, and Predict Your Future CGPA</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab(0)">Semester GPA</button>
+            <button class="tab-button" onclick="switchTab(1)">CGPA Calculator</button>
+            <button class="tab-button" onclick="switchTab(2)">CGPA Predictor</button>
+        </div>
+
+        <!-- Tab 1: Semester GPA Calculator -->
+        <div class="content active" id="tab0">
+            <div class="info-box">
+                📌 Add courses for a semester and calculate the GPA. Grade Scale: S=10, A=9, B=8, C=7, D=6, E=5
+            </div>
+            <div id="coursesContainer"></div>
+            <button class="btn-add" onclick="addCourseRow()">+ Add Course</button>
+            <div class="button-group">
+                <button class="btn-primary" onclick="calculateSemesterGPA()">Calculate Semester GPA</button>
+                <button class="btn-secondary" onclick="clearSemesterTab()">Clear</button>
+            </div>
+            <div class="error" id="semesterError"></div>
+            <div id="semesterResult"></div>
+        </div>
+
+        <!-- Tab 2: CGPA Calculator -->
+        <div class="content" id="tab1">
+            <div class="info-box">
+                📌 Enter GPA and credits for each semester to calculate your cumulative CGPA.
+            </div>
+            <div id="semestersContainer"></div>
+            <button class="btn-add" onclick="addSemesterRow()">+ Add Semester</button>
+            <div class="button-group">
+                <button class="btn-primary" onclick="calculateCGPA()">Calculate CGPA</button>
+                <button class="btn-secondary" onclick="clearCGPATab()">Clear</button>
+            </div>
+            <div class="error" id="cgpaError"></div>
+            <div id="cgpaResult"></div>
+        </div>
+
+        <!-- Tab 3: CGPA Predictor -->
+        <div class="content" id="tab2">
+            <div class="info-box">
+                📌 Predict your final CGPA based on your current performance and current semester's expected performance.
+            </div>
+            <div class="form-group">
+                <label>Current CGPA:</label>
+                <input type="number" id="currentCGPA" min="0" max="10" step="0.01" placeholder="e.g., 8.5">
+            </div>
+            <div class="form-group">
+                <label>Total Credits Completed:</label>
+                <input type="number" id="totalCreditsCompleted" min="0" step="0.5" placeholder="e.g., 48">
+            </div>
+            <div class="form-group">
+                <label>Current Semester GPA:</label>
+                <input type="number" id="currentSemesterGPA" min="0" max="10" step="0.01" placeholder="e.g., 9.0">
+            </div>
+            <div class="form-group">
+                <label>Current Semester Credits:</label>
+                <input type="number" id="currentSemesterCredits" min="0" step="0.5" placeholder="e.g., 16">
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" onclick="predictCGPA()">Predict CGPA</button>
+                <button class="btn-secondary" onclick="clearPredictorTab()">Clear</button>
+            </div>
+            <div class="error" id="predictorError"></div>
+            <div id="predictorResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize with one empty row
+        document.addEventListener('DOMContentLoaded', function() {
+            addCourseRow();
+            addSemesterRow();
+        });
+
+        function switchTab(tabIndex) {
+            // Hide all tabs
+            const contents = document.querySelectorAll('.content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(`tab${tabIndex}`).classList.add('active');
+            buttons[tabIndex].classList.add('active');
+        }
+
+        // ============ SEMESTER GPA CALCULATOR ============
+        function addCourseRow() {
+            const container = document.getElementById('coursesContainer');
+            const rowCount = container.querySelectorAll('.course-row').length + 1;
+            
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.innerHTML = `
+                <div class="form-group">
+                    <input type="text" placeholder="Course Name" class="course-name">
+                </div>
+                <div class="form-group">
+                    <select class="course-grade">
+                        <option value="">Select Grade</option>
+                        <option value="10">S (10)</option>
+                        <option value="9">A (9)</option>
+                        <option value="8">B (8)</option>
+                        <option value="7">C (7)</option>
+                        <option value="6">D (6)</option>
+                        <option value="5">E (5)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" placeholder="Credits" class="course-credits" min="0" step="0.5">
+                </div>
+                <button class="btn-danger" onclick="removeCourseRow(this)">Remove</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeCourseRow(button) {
+            button.closest('.course-row').remove();
+        }
+
+        function calculateSemesterGPA() {
+            const errorDiv = document.getElementById('semesterError');
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+
+            const rows = document.querySelectorAll('#coursesContainer .course-row');
+            let totalGradePoints = 0;
+            let totalCredits = 0;
+            let validRows = 0;
+
+            rows.forEach(row => {
+                const grade = row.querySelector('.course-grade').value;
+                const credits = parseFloat(row.querySelector('.course-credits').value);
+
+                if (grade && credits) {
+                    totalGradePoints += parseFloat(grade) * credits;
+                    totalCredits += credits;
+                    validRows++;
+                }
+            });
+
+            if (validRows === 0) {
+                errorDiv.textContent = '❌ Please add at least one course with grade and credits!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            const gpa = (totalGradePoints / totalCredits).toFixed(2);
+
+            const resultDiv = document.getElementById('semesterResult');
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <div class="result-item">
+                        <span class="result-label">Number of Courses:</span>
+                        <span class="result-value">${validRows}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Grade Points:</span>
+                        <span class="result-value">${totalGradePoints.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Credits:</span>
+                        <span class="result-value">${totalCredits.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">📊 Semester GPA:</span>
+                        <span class="result-value">${gpa}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearSemesterTab() {
+            document.getElementById('coursesContainer').innerHTML = '';
+            document.getElementById('semesterResult').innerHTML = '';
+            document.getElementById('semesterError').classList.remove('show');
+            addCourseRow();
+        }
+
+        // ============ CGPA CALCULATOR ============
+        function addSemesterRow() {
+            const container = document.getElementById('semestersContainer');
+            const rowCount = container.querySelectorAll('.semester-row').length + 1;
+            
+            const row = document.createElement('div');
+            row.className = 'semester-row';
+            row.innerHTML = `
+                <div class="form-group">
+                    <input type="number" placeholder="Semester ${rowCount} GPA" class="semester-gpa" min="0" max="10" step="0.01">
+                </div>
+                <div class="form-group">
+                    <input type="number" placeholder="Semester ${rowCount} Credits" class="semester-credits" min="0" step="0.5">
+                </div>
+                <button class="btn-danger" onclick="removeSemesterRow(this)">Remove</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeSemesterRow(button) {
+            button.closest('.semester-row').remove();
+        }
+
+        function calculateCGPA() {
+            const errorDiv = document.getElementById('cgpaError');
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+
+            const rows = document.querySelectorAll('#semestersContainer .semester-row');
+            let totalGradePoints = 0;
+            let totalCredits = 0;
+            let validSemesters = 0;
+
+            rows.forEach(row => {
+                const gpa = parseFloat(row.querySelector('.semester-gpa').value);
+                const credits = parseFloat(row.querySelector('.semester-credits').value);
+
+                if (gpa !== null && !isNaN(gpa) && credits !== null && !isNaN(credits) && credits > 0) {
+                    totalGradePoints += gpa * credits;
+                    totalCredits += credits;
+                    validSemesters++;
+                }
+            });
+
+            if (validSemesters === 0) {
+                errorDiv.textContent = '❌ Please add at least one semester with GPA and credits!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            const cgpa = (totalGradePoints / totalCredits).toFixed(2);
+
+            const resultDiv = document.getElementById('cgpaResult');
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <div class="result-item">
+                        <span class="result-label">Number of Semesters:</span>
+                        <span class="result-value">${validSemesters}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Grade Points:</span>
+                        <span class="result-value">${totalGradePoints.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Credits:</span>
+                        <span class="result-value">${totalCredits.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">🎓 Cumulative GPA (CGPA):</span>
+                        <span class="result-value">${cgpa}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearCGPATab() {
+            document.getElementById('semestersContainer').innerHTML = '';
+            document.getElementById('cgpaResult').innerHTML = '';
+            document.getElementById('cgpaError').classList.remove('show');
+            addSemesterRow();
+        }
+
+        // ============ CGPA PREDICTOR ============
+        function predictCGPA() {
+            const errorDiv = document.getElementById('predictorError');
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+
+            const currentCGPA = parseFloat(document.getElementById('currentCGPA').value);
+            const totalCreditsCompleted = parseFloat(document.getElementById('totalCreditsCompleted').value);
+            const currentSemesterGPA = parseFloat(document.getElementById('currentSemesterGPA').value);
+            const currentSemesterCredits = parseFloat(document.getElementById('currentSemesterCredits').value);
+
+            // Validation
+            if (isNaN(currentCGPA) || isNaN(totalCreditsCompleted) || isNaN(currentSemesterGPA) || isNaN(currentSemesterCredits)) {
+                errorDiv.textContent = '❌ Please fill in all fields!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (currentCGPA < 0 || currentCGPA > 10) {
+                errorDiv.textContent = '❌ Current CGPA must be between 0 and 10!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (totalCreditsCompleted < 0) {
+                errorDiv.textContent = '❌ Total credits completed cannot be negative!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (currentSemesterGPA < 0 || currentSemesterGPA > 10) {
+                errorDiv.textContent = '❌ Current semester GPA must be between 0 and 10!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (currentSemesterCredits < 0) {
+                errorDiv.textContent = '❌ Current semester credits cannot be negative!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            // Calculate predicted CGPA
+            const totalGradePoints = (currentCGPA * totalCreditsCompleted) + (currentSemesterGPA * currentSemesterCredits);
+            const totalCredits = totalCreditsCompleted + currentSemesterCredits;
+            const predictedCGPA = (totalGradePoints / totalCredits).toFixed(2);
+
+            const resultDiv = document.getElementById('predictorResult');
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <div class="result-item">
+                        <span class="result-label">Current CGPA:</span>
+                        <span class="result-value">${currentCGPA.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Credits Completed:</span>
+                        <span class="result-value">${totalCreditsCompleted.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Current Semester GPA:</span>
+                        <span class="result-value">${currentSemesterGPA.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Current Semester Credits:</span>
+                        <span class="result-value">${currentSemesterCredits.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Credits After Semester:</span>
+                        <span class="result-value">${totalCredits.toFixed(2)}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">📈 Predicted CGPA:</span>
+                        <span class="result-value" style="font-size: 1.8em; color: #48bb78;">${predictedCGPA}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Change in CGPA:</span>
+                        <span class="result-value" style="color: ${predictedCGPA > currentCGPA ? '#48bb78' : predictedCGPA < currentCGPA ? '#f56565' : '#667eea'};">
+                            ${predictedCGPA > currentCGPA ? '+' : ''}${(predictedCGPA - currentCGPA).toFixed(2)}
+                        </span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function clearPredictorTab() {
+            document.getElementById('currentCGPA').value = '';
+            document.getElementById('totalCreditsCompleted').value = '';
+            document.getElementById('currentSemesterGPA').value = '';
+            document.getElementById('currentSemesterCredits').value = '';
+            document.getElementById('predictorResult').innerHTML = '';
+            document.getElementById('predictorError').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
