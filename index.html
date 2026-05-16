@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CGPA Calculator</title>
+    <title>CGPA Calculator - Academic Excellence Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,87 +12,160 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --accent: #f093fb;
+            --success: #48bb78;
+            --danger: #f56565;
+            --warning: #ed8936;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --neutral-100: #edf2f7;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e0;
+            --neutral-600: #718096;
+            --neutral-700: #4a5568;
+            --neutral-900: #1a202c;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            width: 400%;
+            height: 400%;
+            top: -100%;
+            left: -100%;
+            background: linear-gradient(
+                45deg,
+                #667eea 0%,
+                #764ba2 25%,
+                #f093fb 50%,
+                #667eea 75%,
+                #764ba2 100%
+            );
+            background-size: 100% 100%;
+            z-index: -1;
+            opacity: 0.03;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(-50%, -50%); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Floating particles effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="1"/></filter><rect width="1200" height="600" fill="%23fff" filter="url(%23noise)" opacity="0.03"/></svg>');
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 900px;
-            width: 100%;
-            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
+        /* Premium header with premium shadow */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 60px 40px;
             text-align: center;
+            margin-bottom: 40px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 25px 50px rgba(102, 126, 234, 0.3),
+                0 0 1px rgba(255, 255, 255, 0.2) inset;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(240, 147, 251, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.5; }
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 0.5px;
         }
 
-        .tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
-            flex-wrap: wrap;
+        /* Main content container */
+        .content-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.1),
+                0 0 1px rgba(255, 255, 255, 0.5) inset;
+            animation: slideUp 0.6s ease-out;
         }
 
-        .tab-button {
-            flex: 1;
-            min-width: 150px;
-            padding: 15px;
-            border: none;
-            background: #f8f9fa;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            color: #495057;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-button:hover {
-            background: #e9ecef;
-        }
-
-        .tab-button.active {
-            background: white;
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .content {
-            padding: 40px;
-            display: none;
-        }
-
-        .content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -99,139 +173,294 @@
             }
         }
 
+        /* Tab navigation */
+        .tabs {
+            display: flex;
+            background: linear-gradient(90deg, #f7fafc 0%, #edf2f7 100%);
+            border-bottom: 1px solid var(--neutral-200);
+            flex-wrap: wrap;
+            padding: 0;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 160px;
+            padding: 18px 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--neutral-600);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            background: rgba(102, 126, 234, 0.08);
+        }
+
+        .tab-button.active::after {
+            width: 100%;
+        }
+
+        /* Tab content */
+        .content {
+            padding: 45px;
+            display: none;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        /* Info box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 30px;
+            color: var(--neutral-700);
+            font-size: 0.95rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Form groups */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
+            color: var(--neutral-900);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
+            padding: 14px 16px;
+            border: 2px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            transition: all 0.3s ease;
+            color: var(--neutral-900);
+        }
+
+        input::placeholder {
+            color: var(--neutral-400);
+            font-weight: 300;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 
+                0 0 0 4px rgba(102, 126, 234, 0.1),
+                0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* Course/Semester rows */
+        .course-row, .semester-row {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 16px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f9f9ff 0%, #f5f9ff 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            align-items: end;
+            transition: all 0.3s ease;
+        }
+
+        .course-row:hover, .semester-row:hover {
+            background: linear-gradient(135deg, #f5f7ff 0%, #eff3ff 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.2);
         }
 
         .course-row {
-            display: grid;
             grid-template-columns: 2fr 1fr 1fr auto;
-            gap: 15px;
-            margin-bottom: 15px;
-            align-items: end;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            flex-wrap: wrap;
-        }
-
-        @media (max-width: 768px) {
-            .course-row {
-                grid-template-columns: 1fr;
-            }
         }
 
         .semester-row {
-            display: grid;
             grid-template-columns: 1fr 1fr auto;
-            gap: 15px;
-            margin-bottom: 15px;
-            align-items: end;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
         }
 
         @media (max-width: 768px) {
-            .semester-row {
+            .course-row, .semester-row {
                 grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 24px;
             }
         }
 
+        /* Buttons */
         .button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 30px;
+            gap: 12px;
+            margin-top: 32px;
             flex-wrap: wrap;
         }
 
         button {
-            padding: 12px 25px;
+            padding: 14px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
+
+        button:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             flex: 1;
-            min-width: 150px;
+            min-width: 140px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
-            background: #e9ecef;
-            color: #333;
+            background: var(--neutral-200);
+            color: var(--neutral-900);
             flex: 1;
-            min-width: 150px;
+            min-width: 140px;
         }
 
         .btn-secondary:hover {
-            background: #dee2e6;
+            background: var(--neutral-300);
+            transform: translateY(-2px);
         }
 
         .btn-danger {
-            background: #f56565;
+            background: linear-gradient(135deg, var(--danger) 0%, #e53e3e 100%);
             color: white;
-            padding: 8px 15px;
+            padding: 10px 16px;
             min-width: auto;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.2);
         }
 
         .btn-danger:hover {
-            background: #e53e3e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(245, 101, 101, 0.3);
         }
 
         .btn-add {
-            background: #48bb78;
+            background: linear-gradient(135deg, var(--success) 0%, #38a169 100%);
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.2);
         }
 
         .btn-add:hover {
-            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(72, 187, 120, 0.3);
         }
 
+        /* Results section */
         .result {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 25px;
-            border-radius: 12px;
-            margin-top: 25px;
-            border-left: 5px solid #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%);
+            padding: 32px;
+            border-radius: 16px;
+            margin-top: 32px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+            animation: slideInScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .result-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .result-item:last-child {
@@ -241,143 +470,203 @@
         }
 
         .result-label {
-            color: #555;
+            color: var(--neutral-700);
             font-weight: 600;
-            display: block;
-            margin-bottom: 5px;
+            font-size: 0.95rem;
         }
 
         .result-value {
-            color: #667eea;
-            font-size: 1.5em;
-            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: 0.05em;
         }
 
+        /* Error messages */
         .error {
-            background: #fee;
-            color: #c33;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid #c33;
+            background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(245, 101, 101, 0.05) 100%);
+            color: var(--danger);
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--danger);
             display: none;
+            font-weight: 500;
+            animation: slideInError 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideInError {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .error.show {
             display: block;
         }
 
-        .success {
-            background: #efe;
-            color: #3c3;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            border-left: 4px solid #3c3;
-            display: none;
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-top: 40px;
         }
 
-        .success.show {
-            display: block;
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .info-box {
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #1976d2;
+        footer a:hover {
+            color: white;
+            text-decoration: underline;
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
+            .header {
+                padding: 40px 24px;
+            }
+
             .header h1 {
-                font-size: 1.8em;
+                font-size: 2rem;
             }
 
             .content {
-                padding: 20px;
+                padding: 24px;
+            }
+
+            .tabs {
+                gap: 0;
             }
 
             .tab-button {
-                min-width: 120px;
-                padding: 12px;
+                min-width: 110px;
+                padding: 14px 16px;
+                font-size: 0.85rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body::before, body::after {
+                display: none;
+            }
+
+            .header {
+                page-break-after: avoid;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Premium Header -->
         <div class="header">
             <h1>🎓 CGPA Calculator</h1>
-            <p>Calculate Your GPA, CGPA, and Predict Your Future CGPA</p>
+            <p>Track Your Academic Excellence</p>
         </div>
 
-        <div class="tabs">
-            <button class="tab-button active" onclick="switchTab(0)">Semester GPA</button>
-            <button class="tab-button" onclick="switchTab(1)">CGPA Calculator</button>
-            <button class="tab-button" onclick="switchTab(2)">CGPA Predictor</button>
-        </div>
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab(0)">Semester GPA</button>
+                <button class="tab-button" onclick="switchTab(1)">CGPA Calculator</button>
+                <button class="tab-button" onclick="switchTab(2)">CGPA Predictor</button>
+            </div>
 
-        <!-- Tab 1: Semester GPA Calculator -->
-        <div class="content active" id="tab0">
-            <div class="info-box">
-                📌 Add courses for a semester and calculate the GPA. Grade Scale: S=10, A=9, B=8, C=7, D=6, E=5
+            <!-- Tab 1: Semester GPA Calculator -->
+            <div class="content active" id="tab0">
+                <div class="info-box">
+                    📌 Add courses for a semester and calculate the GPA. Grade Scale: S=10, A=9, B=8, C=7, D=6, E=5
+                </div>
+                <div id="coursesContainer"></div>
+                <button class="btn-add" onclick="addCourseRow()">+ Add Course</button>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="calculateSemesterGPA()">Calculate Semester GPA</button>
+                    <button class="btn-secondary" onclick="clearSemesterTab()">Clear</button>
+                </div>
+                <div class="error" id="semesterError"></div>
+                <div id="semesterResult"></div>
             </div>
-            <div id="coursesContainer"></div>
-            <button class="btn-add" onclick="addCourseRow()">+ Add Course</button>
-            <div class="button-group">
-                <button class="btn-primary" onclick="calculateSemesterGPA()">Calculate Semester GPA</button>
-                <button class="btn-secondary" onclick="clearSemesterTab()">Clear</button>
-            </div>
-            <div class="error" id="semesterError"></div>
-            <div id="semesterResult"></div>
-        </div>
 
-        <!-- Tab 2: CGPA Calculator -->
-        <div class="content" id="tab1">
-            <div class="info-box">
-                📌 Enter GPA and credits for each semester to calculate your cumulative CGPA.
+            <!-- Tab 2: CGPA Calculator -->
+            <div class="content" id="tab1">
+                <div class="info-box">
+                    📌 Enter GPA and credits for each semester to calculate your cumulative CGPA.
+                </div>
+                <div id="semestersContainer"></div>
+                <button class="btn-add" onclick="addSemesterRow()">+ Add Semester</button>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="calculateCGPA()">Calculate CGPA</button>
+                    <button class="btn-secondary" onclick="clearCGPATab()">Clear</button>
+                </div>
+                <div class="error" id="cgpaError"></div>
+                <div id="cgpaResult"></div>
             </div>
-            <div id="semestersContainer"></div>
-            <button class="btn-add" onclick="addSemesterRow()">+ Add Semester</button>
-            <div class="button-group">
-                <button class="btn-primary" onclick="calculateCGPA()">Calculate CGPA</button>
-                <button class="btn-secondary" onclick="clearCGPATab()">Clear</button>
-            </div>
-            <div class="error" id="cgpaError"></div>
-            <div id="cgpaResult"></div>
-        </div>
 
-        <!-- Tab 3: CGPA Predictor -->
-        <div class="content" id="tab2">
-            <div class="info-box">
-                📌 Predict your final CGPA based on your current performance and current semester's expected performance.
+            <!-- Tab 3: CGPA Predictor -->
+            <div class="content" id="tab2">
+                <div class="info-box">
+                    📌 Predict your final CGPA based on your current performance and expected semester performance.
+                </div>
+                <div class="form-group">
+                    <label>Current CGPA:</label>
+                    <input type="number" id="currentCGPA" min="0" max="10" step="0.01" placeholder="e.g., 8.5">
+                </div>
+                <div class="form-group">
+                    <label>Total Credits Completed:</label>
+                    <input type="number" id="totalCreditsCompleted" min="0" step="0.5" placeholder="e.g., 48">
+                </div>
+                <div class="form-group">
+                    <label>Current Semester GPA:</label>
+                    <input type="number" id="currentSemesterGPA" min="0" max="10" step="0.01" placeholder="e.g., 9.0">
+                </div>
+                <div class="form-group">
+                    <label>Current Semester Credits:</label>
+                    <input type="number" id="currentSemesterCredits" min="0" step="0.5" placeholder="e.g., 16">
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="predictCGPA()">Predict CGPA</button>
+                    <button class="btn-secondary" onclick="clearPredictorTab()">Clear</button>
+                </div>
+                <div class="error" id="predictorError"></div>
+                <div id="predictorResult"></div>
             </div>
-            <div class="form-group">
-                <label>Current CGPA:</label>
-                <input type="number" id="currentCGPA" min="0" max="10" step="0.01" placeholder="e.g., 8.5">
-            </div>
-            <div class="form-group">
-                <label>Total Credits Completed:</label>
-                <input type="number" id="totalCreditsCompleted" min="0" step="0.5" placeholder="e.g., 48">
-            </div>
-            <div class="form-group">
-                <label>Current Semester GPA:</label>
-                <input type="number" id="currentSemesterGPA" min="0" max="10" step="0.01" placeholder="e.g., 9.0">
-            </div>
-            <div class="form-group">
-                <label>Current Semester Credits:</label>
-                <input type="number" id="currentSemesterCredits" min="0" step="0.5" placeholder="e.g., 16">
-            </div>
-            <div class="button-group">
-                <button class="btn-primary" onclick="predictCGPA()">Predict CGPA</button>
-                <button class="btn-secondary" onclick="clearPredictorTab()">Clear</button>
-            </div>
-            <div class="error" id="predictorError"></div>
-            <div id="predictorResult"></div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>✨ Built with precision | Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></p>
+    </footer>
 
     <script>
         // Initialize with one empty row
@@ -387,15 +676,12 @@
         });
 
         function switchTab(tabIndex) {
-            // Hide all tabs
             const contents = document.querySelectorAll('.content');
             contents.forEach(content => content.classList.remove('active'));
             
-            // Remove active class from all buttons
             const buttons = document.querySelectorAll('.tab-button');
             buttons.forEach(button => button.classList.remove('active'));
             
-            // Show selected tab
             document.getElementById(`tab${tabIndex}`).classList.add('active');
             buttons[tabIndex].classList.add('active');
         }
@@ -403,7 +689,6 @@
         // ============ SEMESTER GPA CALCULATOR ============
         function addCourseRow() {
             const container = document.getElementById('coursesContainer');
-            const rowCount = container.querySelectorAll('.course-row').length + 1;
             
             const row = document.createElement('div');
             row.className = 'course-row';
@@ -480,7 +765,7 @@
                     </div>
                     <div class="result-item">
                         <span class="result-label">📊 Semester GPA:</span>
-                        <span class="result-value">${gpa}</span>
+                        <span class="result-value" style="font-size: 2em; color: #667eea;">${gpa}</span>
                     </div>
                 </div>
             `;
@@ -562,7 +847,7 @@
                     </div>
                     <div class="result-item">
                         <span class="result-label">🎓 Cumulative GPA (CGPA):</span>
-                        <span class="result-value">${cgpa}</span>
+                        <span class="result-value" style="font-size: 2em; color: #667eea;">${cgpa}</span>
                     </div>
                 </div>
             `;
@@ -586,7 +871,6 @@
             const currentSemesterGPA = parseFloat(document.getElementById('currentSemesterGPA').value);
             const currentSemesterCredits = parseFloat(document.getElementById('currentSemesterCredits').value);
 
-            // Validation
             if (isNaN(currentCGPA) || isNaN(totalCreditsCompleted) || isNaN(currentSemesterGPA) || isNaN(currentSemesterCredits)) {
                 errorDiv.textContent = '❌ Please fill in all fields!';
                 errorDiv.classList.add('show');
@@ -617,10 +901,11 @@
                 return;
             }
 
-            // Calculate predicted CGPA
             const totalGradePoints = (currentCGPA * totalCreditsCompleted) + (currentSemesterGPA * currentSemesterCredits);
             const totalCredits = totalCreditsCompleted + currentSemesterCredits;
             const predictedCGPA = (totalGradePoints / totalCredits).toFixed(2);
+            const change = (predictedCGPA - currentCGPA).toFixed(2);
+            const changeColor = predictedCGPA > currentCGPA ? '#48bb78' : predictedCGPA < currentCGPA ? '#f56565' : '#667eea';
 
             const resultDiv = document.getElementById('predictorResult');
             resultDiv.innerHTML = `
@@ -647,12 +932,12 @@
                     </div>
                     <div class="result-item">
                         <span class="result-label">📈 Predicted CGPA:</span>
-                        <span class="result-value" style="font-size: 1.8em; color: #48bb78;">${predictedCGPA}</span>
+                        <span class="result-value" style="font-size: 2em; color: #667eea;">${predictedCGPA}</span>
                     </div>
                     <div class="result-item">
                         <span class="result-label">Change in CGPA:</span>
-                        <span class="result-value" style="color: ${predictedCGPA > currentCGPA ? '#48bb78' : predictedCGPA < currentCGPA ? '#f56565' : '#667eea'};">
-                            ${predictedCGPA > currentCGPA ? '+' : ''}${(predictedCGPA - currentCGPA).toFixed(2)}
+                        <span class="result-value" style="color: ${changeColor}; font-size: 1.4em;">
+                            ${change > 0 ? '+' : ''}${change}
                         </span>
                     </div>
                 </div>
