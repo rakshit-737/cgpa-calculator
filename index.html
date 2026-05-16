@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CGPA Calculator - Precise Academic Planning</title>
+    <title>CGPA Calculator - Academic Performance Tracking</title>
     <style>
         * {
             margin: 0;
@@ -16,32 +16,30 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-light: #e0e7ff;
+            --primary-light: #818cf8;
             --secondary: #8b5cf6;
-            --accent: #f97316;
             --success: #10b981;
             --danger: #ef4444;
-            --neutral-50: #f9fafb;
-            --neutral-100: #f3f4f6;
-            --neutral-200: #e5e7eb;
-            --neutral-300: #d1d5db;
-            --neutral-400: #9ca3af;
-            --neutral-500: #6b7280;
-            --neutral-600: #4b5563;
-            --neutral-900: #111827;
+            --dark-bg: #0f172a;
+            --dark-secondary: #1e293b;
+            --dark-tertiary: #334155;
+            --dark-border: #475569;
+            --dark-input: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
             --radius: 12px;
             --radius-lg: 20px;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 50%, var(--dark-bg) 100%);
             min-height: 100vh;
-            color: var(--neutral-900);
+            color: var(--text-primary);
             overflow-x: hidden;
         }
 
-        /* Animated background blur */
         body::before {
             content: '';
             position: fixed;
@@ -49,7 +47,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
             animation: drift 20s ease-in-out infinite;
             pointer-events: none;
             z-index: 0;
@@ -71,10 +69,11 @@
         }
 
         .container {
-            background: white;
+            background: var(--dark-secondary);
             border-radius: var(--radius-lg);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
-                        0 0 1px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--dark-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
             max-width: 950px;
             width: 100%;
             overflow: hidden;
@@ -92,7 +91,6 @@
             }
         }
 
-        /* Header */
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
@@ -138,11 +136,10 @@
             letter-spacing: 0.3px;
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
-            background: var(--neutral-50);
-            border-bottom: 1px solid var(--neutral-200);
+            background: var(--dark-tertiary);
+            border-bottom: 1px solid var(--dark-border);
             flex-wrap: wrap;
             gap: 0;
         }
@@ -156,7 +153,7 @@
             cursor: pointer;
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--neutral-500);
+            color: var(--text-tertiary);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
             letter-spacing: 0.3px;
@@ -176,20 +173,19 @@
         }
 
         .tab-button:hover {
-            color: var(--primary);
-            background: rgba(99, 102, 241, 0.05);
+            color: var(--primary-light);
+            background: rgba(99, 102, 241, 0.1);
         }
 
         .tab-button.active {
-            color: var(--primary);
-            background: white;
+            color: var(--primary-light);
+            background: rgba(99, 102, 241, 0.08);
         }
 
         .tab-button.active::after {
             transform: scaleX(1);
         }
 
-        /* Content */
         .content {
             padding: 40px;
             display: none;
@@ -211,14 +207,13 @@
             }
         }
 
-        /* Info Box */
         .info-box {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
-            border: 1px solid var(--primary-light);
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             border-radius: var(--radius);
             padding: 16px 20px;
             margin-bottom: 30px;
-            color: var(--primary);
+            color: var(--text-secondary);
             font-size: 0.95rem;
             font-weight: 500;
             display: flex;
@@ -238,7 +233,6 @@
             }
         }
 
-        /* Form Groups */
         .form-group {
             margin-bottom: 20px;
         }
@@ -246,7 +240,7 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: var(--neutral-900);
+            color: var(--text-primary);
             font-weight: 600;
             font-size: 0.9rem;
             letter-spacing: 0.3px;
@@ -256,28 +250,33 @@
         select {
             width: 100%;
             padding: 12px 14px;
-            border: 2px solid var(--neutral-200);
+            border: 1px solid var(--dark-border);
             border-radius: var(--radius);
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
-            background: white;
+            background: var(--dark-input);
+            color: var(--text-primary);
+        }
+
+        input::placeholder,
+        select {
+            color: var(--text-tertiary);
         }
 
         input:hover,
         select:hover {
-            border-color: var(--neutral-300);
+            border-color: rgba(99, 102, 241, 0.4);
         }
 
         input:focus,
         select:focus {
             outline: none;
             border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.02);
-            box-shadow: 0 0 0 3px var(--primary-light);
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
 
-        /* Course Row */
         .course-row {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr auto;
@@ -285,9 +284,9 @@
             margin-bottom: 15px;
             align-items: end;
             padding: 18px;
-            background: var(--neutral-50);
+            background: var(--dark-tertiary);
             border-radius: var(--radius);
-            border: 1px solid var(--neutral-200);
+            border: 1px solid var(--dark-border);
             transition: all 0.3s ease;
             animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -304,9 +303,8 @@
         }
 
         .course-row:hover {
-            background: white;
-            border-color: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+            background: rgba(99, 102, 241, 0.08);
+            border-color: rgba(99, 102, 241, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -315,7 +313,6 @@
             }
         }
 
-        /* Semester Row */
         .semester-row {
             display: grid;
             grid-template-columns: 1fr 1fr auto;
@@ -323,17 +320,16 @@
             margin-bottom: 15px;
             align-items: end;
             padding: 18px;
-            background: var(--neutral-50);
+            background: var(--dark-tertiary);
             border-radius: var(--radius);
-            border: 1px solid var(--neutral-200);
+            border: 1px solid var(--dark-border);
             transition: all 0.3s ease;
             animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .semester-row:hover {
-            background: white;
-            border-color: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+            background: rgba(99, 102, 241, 0.08);
+            border-color: rgba(99, 102, 241, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -342,7 +338,6 @@
             }
         }
 
-        /* Button Group */
         .button-group {
             display: flex;
             gap: 12px;
@@ -400,21 +395,21 @@
         }
 
         .btn-secondary {
-            background: var(--neutral-100);
-            color: var(--neutral-900);
+            background: var(--dark-tertiary);
+            color: var(--text-primary);
             flex: 1;
             min-width: 160px;
-            border: 2px solid var(--neutral-200);
+            border: 1px solid var(--dark-border);
         }
 
         .btn-secondary:hover {
-            background: var(--neutral-200);
-            border-color: var(--neutral-300);
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .btn-danger {
             background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+            color: #ff7675;
             padding: 8px 12px;
             min-width: auto;
             border: 1px solid rgba(239, 68, 68, 0.2);
@@ -440,10 +435,9 @@
             box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
         }
 
-        /* Result */
         .result {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
-            border: 2px solid var(--primary-light);
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             padding: 28px;
             border-radius: var(--radius);
             margin-top: 30px;
@@ -453,7 +447,7 @@
         .result-item {
             margin-bottom: 18px;
             padding-bottom: 18px;
-            border-bottom: 1px solid var(--primary-light);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -466,20 +460,19 @@
         }
 
         .result-label {
-            color: var(--neutral-600);
+            color: var(--text-secondary);
             font-weight: 600;
             font-size: 0.9rem;
             letter-spacing: 0.3px;
         }
 
         .result-value {
-            color: var(--primary);
+            color: var(--primary-light);
             font-size: 1.6rem;
             font-weight: 700;
             font-family: 'Figtree', sans-serif;
         }
 
-        /* Messages */
         .error,
         .success {
             padding: 16px 20px;
@@ -500,17 +493,16 @@
 
         .error {
             background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
+            color: #ff7675;
             border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
         .success {
             background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
+            color: #52c41a;
             border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 padding: 30px 20px;
@@ -548,7 +540,6 @@
             }
         }
 
-        /* Loading state */
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -564,7 +555,7 @@
         <div class="container">
             <div class="header">
                 <div class="header-content">
-                    <h1>📊 CGPA Calculator</h1>
+                    <h1>CGPA Calculator</h1>
                     <p>Precise Academic Planning & Performance Tracking</p>
                 </div>
             </div>
@@ -578,11 +569,11 @@
             <!-- Tab 1: Semester GPA Calculator -->
             <div class="content active" id="tab0">
                 <div class="info-box">
-                    <span>📌</span>
+                    <span>Info:</span>
                     <span>Add courses with their grades and credits. Grades: S=10, A=9, B=8, C=7, D=6, E=5</span>
                 </div>
                 <div id="coursesContainer"></div>
-                <button class="btn-add" onclick="addCourseRow()">+ Add Course</button>
+                <button class="btn-add" onclick="addCourseRow()">Add Course</button>
                 <div class="button-group">
                     <button class="btn-primary" onclick="calculateSemesterGPA()">Calculate GPA</button>
                     <button class="btn-secondary" onclick="clearSemesterTab()">Clear</button>
@@ -594,11 +585,11 @@
             <!-- Tab 2: CGPA Calculator -->
             <div class="content" id="tab1">
                 <div class="info-box">
-                    <span>📌</span>
+                    <span>Info:</span>
                     <span>Enter GPA and credits for each completed semester</span>
                 </div>
                 <div id="semestersContainer"></div>
-                <button class="btn-add" onclick="addSemesterRow()">+ Add Semester</button>
+                <button class="btn-add" onclick="addSemesterRow()">Add Semester</button>
                 <div class="button-group">
                     <button class="btn-primary" onclick="calculateCGPA()">Calculate CGPA</button>
                     <button class="btn-secondary" onclick="clearCGPATab()">Clear</button>
@@ -610,7 +601,7 @@
             <!-- Tab 3: CGPA Predictor -->
             <div class="content" id="tab2">
                 <div class="info-box">
-                    <span>📌</span>
+                    <span>Info:</span>
                     <span>Predict your final CGPA based on current and expected performance</span>
                 </div>
                 <div class="form-group">
@@ -681,7 +672,7 @@
                 <div class="form-group">
                     <input type="number" placeholder="Credits" class="course-credits" min="0" step="0.5">
                 </div>
-                <button class="btn-danger" onclick="removeCourseRow(this)">✕ Remove</button>
+                <button class="btn-danger" onclick="removeCourseRow(this)">Remove</button>
             `;
             container.appendChild(row);
         }
@@ -712,7 +703,7 @@
             });
 
             if (validRows === 0) {
-                errorDiv.innerHTML = '❌ Please add at least one course with grade and credits';
+                errorDiv.innerHTML = 'Please add at least one course with grade and credits';
                 errorDiv.classList.add('show');
                 return;
             }
@@ -735,7 +726,7 @@
                         <span class="result-value">${totalCredits.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">✨ Semester GPA</span>
+                        <span class="result-label">Semester GPA</span>
                         <span class="result-value">${gpa}</span>
                     </div>
                 </div>
@@ -765,7 +756,7 @@
                     <label>Credits</label>
                     <input type="number" placeholder="e.g., 16" class="semester-credits" min="0" step="0.5">
                 </div>
-                <button class="btn-danger" onclick="removeSemesterRow(this)">✕ Remove</button>
+                <button class="btn-danger" onclick="removeSemesterRow(this)">Remove</button>
             `;
             container.appendChild(row);
         }
@@ -796,7 +787,7 @@
             });
 
             if (validRows === 0) {
-                errorDiv.innerHTML = '❌ Please add at least one semester with GPA and credits';
+                errorDiv.innerHTML = 'Please add at least one semester with GPA and credits';
                 errorDiv.classList.add('show');
                 return;
             }
@@ -819,7 +810,7 @@
                         <span class="result-value">${totalCredits.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">✨ Cumulative GPA (CGPA)</span>
+                        <span class="result-label">Cumulative GPA (CGPA)</span>
                         <span class="result-value">${cgpa}</span>
                     </div>
                 </div>
@@ -844,19 +835,19 @@
             const currentSemesterCredits = parseFloat(document.getElementById('currentSemesterCredits').value);
 
             if (isNaN(currentCGPA) || isNaN(totalCreditsCompleted) || isNaN(currentSemesterGPA) || isNaN(currentSemesterCredits)) {
-                errorDiv.innerHTML = '❌ Please fill in all fields with valid numbers';
+                errorDiv.innerHTML = 'Please fill in all fields with valid numbers';
                 errorDiv.classList.add('show');
                 return;
             }
 
             if (currentCGPA < 0 || currentCGPA > 10 || currentSemesterGPA < 0 || currentSemesterGPA > 10) {
-                errorDiv.innerHTML = '❌ GPA values must be between 0 and 10';
+                errorDiv.innerHTML = 'GPA values must be between 0 and 10';
                 errorDiv.classList.add('show');
                 return;
             }
 
             if (totalCreditsCompleted < 0 || currentSemesterCredits < 0) {
-                errorDiv.innerHTML = '❌ Credits must be non-negative';
+                errorDiv.innerHTML = 'Credits must be non-negative';
                 errorDiv.classList.add('show');
                 return;
             }
@@ -881,7 +872,7 @@
                         <span class="result-value">${totalCredits.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">🔮 Predicted Final CGPA</span>
+                        <span class="result-label">Predicted Final CGPA</span>
                         <span class="result-value">${predictedCGPA}</span>
                     </div>
                 </div>
