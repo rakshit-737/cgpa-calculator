@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CGPA Calculator - Academic Excellence Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>CGPA Calculator - Precise Academic Planning</title>
     <style>
         * {
             margin: 0;
@@ -12,160 +11,80 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #667eea;
-            --primary-dark: #764ba2;
-            --accent: #f093fb;
-            --success: #48bb78;
-            --danger: #f56565;
-            --warning: #ed8936;
-            --dark: #1a202c;
-            --light: #f7fafc;
-            --neutral-100: #edf2f7;
-            --neutral-200: #e2e8f0;
-            --neutral-300: #cbd5e0;
-            --neutral-600: #718096;
-            --neutral-700: #4a5568;
-            --neutral-900: #1a202c;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Figtree:wght@500;600;700;800&display=swap');
 
-        html {
-            scroll-behavior: smooth;
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #e0e7ff;
+            --secondary: #8b5cf6;
+            --accent: #f97316;
+            --success: #10b981;
+            --danger: #ef4444;
+            --neutral-50: #f9fafb;
+            --neutral-100: #f3f4f6;
+            --neutral-200: #e5e7eb;
+            --neutral-300: #d1d5db;
+            --neutral-400: #9ca3af;
+            --neutral-500: #6b7280;
+            --neutral-600: #4b5563;
+            --neutral-900: #111827;
+            --radius: 12px;
+            --radius-lg: 20px;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
             min-height: 100vh;
+            color: var(--neutral-900);
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Animated gradient background */
+        /* Animated background blur */
         body::before {
             content: '';
             position: fixed;
-            width: 400%;
-            height: 400%;
-            top: -100%;
-            left: -100%;
-            background: linear-gradient(
-                45deg,
-                #667eea 0%,
-                #764ba2 25%,
-                #f093fb 50%,
-                #667eea 75%,
-                #764ba2 100%
-            );
-            background-size: 100% 100%;
-            z-index: -1;
-            opacity: 0.03;
-            animation: gradient-shift 15s ease infinite;
-        }
-
-        @keyframes gradient-shift {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(-50%, -50%); }
-            100% { transform: translate(0, 0); }
-        }
-
-        /* Floating particles effect */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="1"/></filter><rect width="1200" height="600" fill="%23fff" filter="url(%23noise)" opacity="0.03"/></svg>');
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            animation: drift 20s ease-in-out infinite;
             pointer-events: none;
-            z-index: -1;
+            z-index: 0;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
 
-        /* Premium header with premium shadow */
-        .header {
-            position: relative;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 60px 40px;
-            text-align: center;
-            margin-bottom: 40px;
+        .container {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
+                        0 0 1px rgba(0, 0, 0, 0.08);
+            max-width: 950px;
+            width: 100%;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 
-                0 25px 50px rgba(102, 126, 234, 0.3),
-                0 0 1px rgba(255, 255, 255, 0.2) inset;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(240, 147, 251, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.2); opacity: 0.5; }
-        }
-
-        .header h1 {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: white;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.02em;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .header p {
-            font-family: 'Inter', sans-serif;
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-            position: relative;
-            z-index: 1;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-
-        /* Main content container */
-        .content-wrapper {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.1),
-                0 0 1px rgba(255, 255, 255, 0.5) inset;
-            animation: slideUp 0.6s ease-out;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -173,30 +92,74 @@
             }
         }
 
-        /* Tab navigation */
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-family: 'Figtree', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* Tabs */
         .tabs {
             display: flex;
-            background: linear-gradient(90deg, #f7fafc 0%, #edf2f7 100%);
+            background: var(--neutral-50);
             border-bottom: 1px solid var(--neutral-200);
             flex-wrap: wrap;
-            padding: 0;
+            gap: 0;
         }
 
         .tab-button {
             flex: 1;
-            min-width: 160px;
-            padding: 18px 24px;
+            min-width: 140px;
+            padding: 16px 20px;
             border: none;
             background: transparent;
             cursor: pointer;
-            font-family: 'Syne', sans-serif;
             font-size: 0.95rem;
             font-weight: 600;
-            color: var(--neutral-600);
+            color: var(--neutral-500);
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .tab-button::after {
@@ -204,37 +167,43 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 0;
+            right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-            transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .tab-button:hover {
             color: var(--primary);
-            background: rgba(102, 126, 234, 0.05);
+            background: rgba(99, 102, 241, 0.05);
         }
 
         .tab-button.active {
             color: var(--primary);
-            background: rgba(102, 126, 234, 0.08);
+            background: white;
         }
 
         .tab-button.active::after {
-            width: 100%;
+            transform: scaleX(1);
         }
 
-        /* Tab content */
+        /* Content */
         .content {
-            padding: 45px;
+            padding: 40px;
             display: none;
-            animation: fadeInUp 0.4s ease-out;
+            animation: fadeIn 0.4s ease;
         }
 
-        @keyframes fadeInUp {
+        .content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
@@ -242,26 +211,36 @@
             }
         }
 
-        .content.active {
-            display: block;
-        }
-
-        /* Info box */
+        /* Info Box */
         .info-box {
-            background: linear-gradient(135deg, rgba(30, 144, 255, 0.1) 0%, rgba(102, 126, 234, 0.1) 100%);
-            border-left: 4px solid var(--primary);
-            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+            border: 1px solid var(--primary-light);
+            border-radius: var(--radius);
             padding: 16px 20px;
             margin-bottom: 30px;
-            color: var(--neutral-700);
+            color: var(--primary);
             font-size: 0.95rem;
             font-weight: 500;
-            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Form groups */
+        @keyframes slideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Form Groups */
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -269,76 +248,101 @@
             margin-bottom: 8px;
             color: var(--neutral-900);
             font-weight: 600;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
         }
 
-        input, select {
+        input,
+        select {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border: 2px solid var(--neutral-200);
-            border-radius: 12px;
-            font-size: 1rem;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
-            background: white;
             transition: all 0.3s ease;
-            color: var(--neutral-900);
+            background: white;
         }
 
-        input::placeholder {
-            color: var(--neutral-400);
-            font-weight: 300;
+        input:hover,
+        select:hover {
+            border-color: var(--neutral-300);
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 
-                0 0 0 4px rgba(102, 126, 234, 0.1),
-                0 4px 12px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
+            background: rgba(99, 102, 241, 0.02);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
-        /* Course/Semester rows */
-        .course-row, .semester-row {
-            display: grid;
-            gap: 15px;
-            margin-bottom: 16px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f9f9ff 0%, #f5f9ff 100%);
-            border-radius: 14px;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            align-items: end;
-            transition: all 0.3s ease;
-        }
-
-        .course-row:hover, .semester-row:hover {
-            background: linear-gradient(135deg, #f5f7ff 0%, #eff3ff 100%);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
-            border-color: rgba(102, 126, 234, 0.2);
-        }
-
+        /* Course Row */
         .course-row {
+            display: grid;
             grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: end;
+            padding: 18px;
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .semester-row {
-            grid-template-columns: 1fr 1fr auto;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .course-row:hover {
+            background: white;
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
         }
 
         @media (max-width: 768px) {
-            .course-row, .semester-row {
+            .course-row {
                 grid-template-columns: 1fr;
-            }
-
-            .content {
-                padding: 24px;
             }
         }
 
-        /* Buttons */
+        /* Semester Row */
+        .semester-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: end;
+            padding: 18px;
+            background: var(--neutral-50);
+            border-radius: var(--radius);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .semester-row:hover {
+            background: white;
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .semester-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Button Group */
         .button-group {
             display: flex;
             gap: 12px;
@@ -347,16 +351,15 @@
         }
 
         button {
-            padding: 14px 24px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-family: 'Syne', sans-serif;
             font-size: 0.95rem;
-            font-weight: 700;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             position: relative;
             overflow: hidden;
         }
@@ -364,100 +367,93 @@
         button::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
             background: rgba(255, 255, 255, 0.2);
-            transition: left 0.3s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
-        button:hover::before {
-            left: 100%;
+        button:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             flex: 1;
-            min-width: 140px;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.4);
         }
 
         .btn-primary:active {
-            transform: translateY(-1px);
+            transform: translateY(0);
         }
 
         .btn-secondary {
-            background: var(--neutral-200);
+            background: var(--neutral-100);
             color: var(--neutral-900);
             flex: 1;
-            min-width: 140px;
+            min-width: 160px;
+            border: 2px solid var(--neutral-200);
         }
 
         .btn-secondary:hover {
-            background: var(--neutral-300);
-            transform: translateY(-2px);
+            background: var(--neutral-200);
+            border-color: var(--neutral-300);
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #e53e3e 100%);
-            color: white;
-            padding: 10px 16px;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            padding: 8px 12px;
             min-width: auto;
+            border: 1px solid rgba(239, 68, 68, 0.2);
             font-size: 0.85rem;
-            box-shadow: 0 4px 12px rgba(245, 101, 101, 0.2);
         }
 
         .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(245, 101, 101, 0.3);
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
         }
 
         .btn-add {
-            background: linear-gradient(135deg, var(--success) 0%, #38a169 100%);
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
-            padding: 12px 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.2);
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .btn-add:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(72, 187, 120, 0.3);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
         }
 
-        /* Results section */
+        /* Result */
         .result {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%);
-            padding: 32px;
-            border-radius: 16px;
-            margin-top: 32px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
-            animation: slideInScale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes slideInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+            border: 2px solid var(--primary-light);
+            padding: 28px;
+            border-radius: var(--radius);
+            margin-top: 30px;
+            animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .result-item {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--primary-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -470,89 +466,67 @@
         }
 
         .result-label {
-            color: var(--neutral-700);
+            color: var(--neutral-600);
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
         }
 
         .result-value {
             color: var(--primary);
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            font-family: 'Space Mono', monospace;
-            letter-spacing: 0.05em;
+            font-family: 'Figtree', sans-serif;
         }
 
-        /* Error messages */
-        .error {
-            background: linear-gradient(135deg, rgba(245, 101, 101, 0.1) 0%, rgba(245, 101, 101, 0.05) 100%);
-            color: var(--danger);
+        /* Messages */
+        .error,
+        .success {
             padding: 16px 20px;
-            border-radius: 12px;
+            border-radius: var(--radius);
             margin-top: 20px;
-            border-left: 4px solid var(--danger);
             display: none;
+            animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-weight: 500;
-            animation: slideInError 0.3s ease-out;
-            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        @keyframes slideInError {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .error.show,
+        .success.show {
+            display: flex;
         }
 
-        .error.show {
-            display: block;
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            margin-top: 40px;
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        footer a:hover {
-            color: white;
-            text-decoration: underline;
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 40px 24px;
+                padding: 30px 20px;
             }
 
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
 
             .content {
-                padding: 24px;
-            }
-
-            .tabs {
-                gap: 0;
+                padding: 25px 20px;
             }
 
             .tab-button {
-                min-width: 110px;
-                padding: 14px 16px;
+                min-width: 100px;
+                padding: 14px 12px;
                 font-size: 0.85rem;
             }
 
@@ -560,42 +534,41 @@
                 flex-direction: column;
             }
 
-            button {
+            .btn-primary,
+            .btn-secondary {
                 width: 100%;
+                min-width: auto;
+                flex: unset;
+            }
+
+            .result-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
         }
 
-        /* Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation: none !important;
-                transition: none !important;
-            }
+        /* Loading state */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
-        /* Print styles */
-        @media print {
-            body::before, body::after {
-                display: none;
-            }
-
-            .header {
-                page-break-after: avoid;
-            }
+        .loading {
+            animation: pulse 1.5s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Premium Header -->
-        <div class="header">
-            <h1>🎓 CGPA Calculator</h1>
-            <p>Track Your Academic Excellence</p>
-        </div>
+    <div class="wrapper">
+        <div class="container">
+            <div class="header">
+                <div class="header-content">
+                    <h1>📊 CGPA Calculator</h1>
+                    <p>Precise Academic Planning & Performance Tracking</p>
+                </div>
+            </div>
 
-        <!-- Content Wrapper -->
-        <div class="content-wrapper">
-            <!-- Tab Navigation -->
             <div class="tabs">
                 <button class="tab-button active" onclick="switchTab(0)">Semester GPA</button>
                 <button class="tab-button" onclick="switchTab(1)">CGPA Calculator</button>
@@ -605,12 +578,13 @@
             <!-- Tab 1: Semester GPA Calculator -->
             <div class="content active" id="tab0">
                 <div class="info-box">
-                    📌 Add courses for a semester and calculate the GPA. Grade Scale: S=10, A=9, B=8, C=7, D=6, E=5
+                    <span>📌</span>
+                    <span>Add courses with their grades and credits. Grades: S=10, A=9, B=8, C=7, D=6, E=5</span>
                 </div>
                 <div id="coursesContainer"></div>
                 <button class="btn-add" onclick="addCourseRow()">+ Add Course</button>
                 <div class="button-group">
-                    <button class="btn-primary" onclick="calculateSemesterGPA()">Calculate Semester GPA</button>
+                    <button class="btn-primary" onclick="calculateSemesterGPA()">Calculate GPA</button>
                     <button class="btn-secondary" onclick="clearSemesterTab()">Clear</button>
                 </div>
                 <div class="error" id="semesterError"></div>
@@ -620,7 +594,8 @@
             <!-- Tab 2: CGPA Calculator -->
             <div class="content" id="tab1">
                 <div class="info-box">
-                    📌 Enter GPA and credits for each semester to calculate your cumulative CGPA.
+                    <span>📌</span>
+                    <span>Enter GPA and credits for each completed semester</span>
                 </div>
                 <div id="semestersContainer"></div>
                 <button class="btn-add" onclick="addSemesterRow()">+ Add Semester</button>
@@ -635,22 +610,23 @@
             <!-- Tab 3: CGPA Predictor -->
             <div class="content" id="tab2">
                 <div class="info-box">
-                    📌 Predict your final CGPA based on your current performance and expected semester performance.
+                    <span>📌</span>
+                    <span>Predict your final CGPA based on current and expected performance</span>
                 </div>
                 <div class="form-group">
-                    <label>Current CGPA:</label>
-                    <input type="number" id="currentCGPA" min="0" max="10" step="0.01" placeholder="e.g., 8.5">
+                    <label>Current CGPA</label>
+                    <input type="number" id="currentCGPA" min="0" max="10" step="0.01" placeholder="e.g., 8.50">
                 </div>
                 <div class="form-group">
-                    <label>Total Credits Completed:</label>
+                    <label>Total Credits Completed</label>
                     <input type="number" id="totalCreditsCompleted" min="0" step="0.5" placeholder="e.g., 48">
                 </div>
                 <div class="form-group">
-                    <label>Current Semester GPA:</label>
-                    <input type="number" id="currentSemesterGPA" min="0" max="10" step="0.01" placeholder="e.g., 9.0">
+                    <label>Current Semester GPA</label>
+                    <input type="number" id="currentSemesterGPA" min="0" max="10" step="0.01" placeholder="e.g., 9.00">
                 </div>
                 <div class="form-group">
-                    <label>Current Semester Credits:</label>
+                    <label>Current Semester Credits</label>
                     <input type="number" id="currentSemesterCredits" min="0" step="0.5" placeholder="e.g., 16">
                 </div>
                 <div class="button-group">
@@ -663,13 +639,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>✨ Built with precision | Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></p>
-    </footer>
-
     <script>
-        // Initialize with one empty row
         document.addEventListener('DOMContentLoaded', function() {
             addCourseRow();
             addSemesterRow();
@@ -689,6 +659,7 @@
         // ============ SEMESTER GPA CALCULATOR ============
         function addCourseRow() {
             const container = document.getElementById('coursesContainer');
+            const rowCount = container.querySelectorAll('.course-row').length + 1;
             
             const row = document.createElement('div');
             row.className = 'course-row';
@@ -710,7 +681,7 @@
                 <div class="form-group">
                     <input type="number" placeholder="Credits" class="course-credits" min="0" step="0.5">
                 </div>
-                <button class="btn-danger" onclick="removeCourseRow(this)">Remove</button>
+                <button class="btn-danger" onclick="removeCourseRow(this)">✕ Remove</button>
             `;
             container.appendChild(row);
         }
@@ -733,7 +704,7 @@
                 const grade = row.querySelector('.course-grade').value;
                 const credits = parseFloat(row.querySelector('.course-credits').value);
 
-                if (grade && credits) {
+                if (grade && credits > 0) {
                     totalGradePoints += parseFloat(grade) * credits;
                     totalCredits += credits;
                     validRows++;
@@ -741,7 +712,7 @@
             });
 
             if (validRows === 0) {
-                errorDiv.textContent = '❌ Please add at least one course with grade and credits!';
+                errorDiv.innerHTML = '❌ Please add at least one course with grade and credits';
                 errorDiv.classList.add('show');
                 return;
             }
@@ -752,20 +723,20 @@
             resultDiv.innerHTML = `
                 <div class="result">
                     <div class="result-item">
-                        <span class="result-label">Number of Courses:</span>
+                        <span class="result-label">Number of Courses</span>
                         <span class="result-value">${validRows}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Total Grade Points:</span>
+                        <span class="result-label">Total Grade Points</span>
                         <span class="result-value">${totalGradePoints.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Total Credits:</span>
+                        <span class="result-label">Total Credits</span>
                         <span class="result-value">${totalCredits.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">📊 Semester GPA:</span>
-                        <span class="result-value" style="font-size: 2em; color: #667eea;">${gpa}</span>
+                        <span class="result-label">✨ Semester GPA</span>
+                        <span class="result-value">${gpa}</span>
                     </div>
                 </div>
             `;
@@ -787,12 +758,14 @@
             row.className = 'semester-row';
             row.innerHTML = `
                 <div class="form-group">
-                    <input type="number" placeholder="Semester ${rowCount} GPA" class="semester-gpa" min="0" max="10" step="0.01">
+                    <label>Semester ${rowCount}</label>
+                    <input type="number" placeholder="e.g., 8.50" class="semester-gpa" min="0" max="10" step="0.01">
                 </div>
                 <div class="form-group">
-                    <input type="number" placeholder="Semester ${rowCount} Credits" class="semester-credits" min="0" step="0.5">
+                    <label>Credits</label>
+                    <input type="number" placeholder="e.g., 16" class="semester-credits" min="0" step="0.5">
                 </div>
-                <button class="btn-danger" onclick="removeSemesterRow(this)">Remove</button>
+                <button class="btn-danger" onclick="removeSemesterRow(this)">✕ Remove</button>
             `;
             container.appendChild(row);
         }
@@ -807,47 +780,47 @@
             errorDiv.textContent = '';
 
             const rows = document.querySelectorAll('#semestersContainer .semester-row');
-            let totalGradePoints = 0;
+            let totalWeightedGPA = 0;
             let totalCredits = 0;
-            let validSemesters = 0;
+            let validRows = 0;
 
             rows.forEach(row => {
                 const gpa = parseFloat(row.querySelector('.semester-gpa').value);
                 const credits = parseFloat(row.querySelector('.semester-credits').value);
 
-                if (gpa !== null && !isNaN(gpa) && credits !== null && !isNaN(credits) && credits > 0) {
-                    totalGradePoints += gpa * credits;
+                if (gpa >= 0 && credits > 0) {
+                    totalWeightedGPA += gpa * credits;
                     totalCredits += credits;
-                    validSemesters++;
+                    validRows++;
                 }
             });
 
-            if (validSemesters === 0) {
-                errorDiv.textContent = '❌ Please add at least one semester with GPA and credits!';
+            if (validRows === 0) {
+                errorDiv.innerHTML = '❌ Please add at least one semester with GPA and credits';
                 errorDiv.classList.add('show');
                 return;
             }
 
-            const cgpa = (totalGradePoints / totalCredits).toFixed(2);
+            const cgpa = (totalWeightedGPA / totalCredits).toFixed(2);
 
             const resultDiv = document.getElementById('cgpaResult');
             resultDiv.innerHTML = `
                 <div class="result">
                     <div class="result-item">
-                        <span class="result-label">Number of Semesters:</span>
-                        <span class="result-value">${validSemesters}</span>
+                        <span class="result-label">Semesters Completed</span>
+                        <span class="result-value">${validRows}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Total Grade Points:</span>
-                        <span class="result-value">${totalGradePoints.toFixed(2)}</span>
+                        <span class="result-label">Total Weighted GPA</span>
+                        <span class="result-value">${totalWeightedGPA.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Total Credits:</span>
+                        <span class="result-label">Total Credits</span>
                         <span class="result-value">${totalCredits.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">🎓 Cumulative GPA (CGPA):</span>
-                        <span class="result-value" style="font-size: 2em; color: #667eea;">${cgpa}</span>
+                        <span class="result-label">✨ Cumulative GPA (CGPA)</span>
+                        <span class="result-value">${cgpa}</span>
                     </div>
                 </div>
             `;
@@ -864,7 +837,6 @@
         function predictCGPA() {
             const errorDiv = document.getElementById('predictorError');
             errorDiv.classList.remove('show');
-            errorDiv.textContent = '';
 
             const currentCGPA = parseFloat(document.getElementById('currentCGPA').value);
             const totalCreditsCompleted = parseFloat(document.getElementById('totalCreditsCompleted').value);
@@ -872,73 +844,45 @@
             const currentSemesterCredits = parseFloat(document.getElementById('currentSemesterCredits').value);
 
             if (isNaN(currentCGPA) || isNaN(totalCreditsCompleted) || isNaN(currentSemesterGPA) || isNaN(currentSemesterCredits)) {
-                errorDiv.textContent = '❌ Please fill in all fields!';
+                errorDiv.innerHTML = '❌ Please fill in all fields with valid numbers';
                 errorDiv.classList.add('show');
                 return;
             }
 
-            if (currentCGPA < 0 || currentCGPA > 10) {
-                errorDiv.textContent = '❌ Current CGPA must be between 0 and 10!';
+            if (currentCGPA < 0 || currentCGPA > 10 || currentSemesterGPA < 0 || currentSemesterGPA > 10) {
+                errorDiv.innerHTML = '❌ GPA values must be between 0 and 10';
                 errorDiv.classList.add('show');
                 return;
             }
 
-            if (totalCreditsCompleted < 0) {
-                errorDiv.textContent = '❌ Total credits completed cannot be negative!';
+            if (totalCreditsCompleted < 0 || currentSemesterCredits < 0) {
+                errorDiv.innerHTML = '❌ Credits must be non-negative';
                 errorDiv.classList.add('show');
                 return;
             }
 
-            if (currentSemesterGPA < 0 || currentSemesterGPA > 10) {
-                errorDiv.textContent = '❌ Current semester GPA must be between 0 and 10!';
-                errorDiv.classList.add('show');
-                return;
-            }
-
-            if (currentSemesterCredits < 0) {
-                errorDiv.textContent = '❌ Current semester credits cannot be negative!';
-                errorDiv.classList.add('show');
-                return;
-            }
-
-            const totalGradePoints = (currentCGPA * totalCreditsCompleted) + (currentSemesterGPA * currentSemesterCredits);
+            const totalWeightedGPA = currentCGPA * totalCreditsCompleted + currentSemesterGPA * currentSemesterCredits;
             const totalCredits = totalCreditsCompleted + currentSemesterCredits;
-            const predictedCGPA = (totalGradePoints / totalCredits).toFixed(2);
-            const change = (predictedCGPA - currentCGPA).toFixed(2);
-            const changeColor = predictedCGPA > currentCGPA ? '#48bb78' : predictedCGPA < currentCGPA ? '#f56565' : '#667eea';
+            const predictedCGPA = (totalWeightedGPA / totalCredits).toFixed(2);
 
             const resultDiv = document.getElementById('predictorResult');
             resultDiv.innerHTML = `
                 <div class="result">
                     <div class="result-item">
-                        <span class="result-label">Current CGPA:</span>
+                        <span class="result-label">Current CGPA</span>
                         <span class="result-value">${currentCGPA.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Credits Completed:</span>
-                        <span class="result-value">${totalCreditsCompleted.toFixed(2)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Current Semester GPA:</span>
+                        <span class="result-label">Current Semester GPA</span>
                         <span class="result-value">${currentSemesterGPA.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">Current Semester Credits:</span>
-                        <span class="result-value">${currentSemesterCredits.toFixed(2)}</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Total Credits After Semester:</span>
+                        <span class="result-label">Total Credits After Semester</span>
                         <span class="result-value">${totalCredits.toFixed(2)}</span>
                     </div>
                     <div class="result-item">
-                        <span class="result-label">📈 Predicted CGPA:</span>
-                        <span class="result-value" style="font-size: 2em; color: #667eea;">${predictedCGPA}</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Change in CGPA:</span>
-                        <span class="result-value" style="color: ${changeColor}; font-size: 1.4em;">
-                            ${change > 0 ? '+' : ''}${change}
-                        </span>
+                        <span class="result-label">🔮 Predicted Final CGPA</span>
+                        <span class="result-value">${predictedCGPA}</span>
                     </div>
                 </div>
             `;
